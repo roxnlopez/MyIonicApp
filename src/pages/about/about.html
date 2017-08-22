@@ -1,2 +1,7 @@
 <h1>Hi! I'm Roxann</h1>
 <p>This page is all about me!</p>
+
+<section>
+    <h2>Search For A Star Wars Character</h2>
+    <input [(ngModel)]="name" type="text" placeholder="Character Name" (keyup)="findCharacter(name)" />
+</section>
