@@ -1,9 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, NgModule } from '@angular/core';
 import { NavController, NavParams } from 'ionic-angular';
-import { Http } from '@angular/http';
+import { HttpModule, Http } from '@angular/http';
 
-import 'rxjs/add/operator/toPromise';
+import { Subject } from 'rxjs/Subject';
 
+
+import 'rxjs/add/operator/debounceTime';
+import 'rxjs/add/operator/distinctUntilChanged';
+import 'rxjs/add/operator/map';
 
 @Component({
   selector: 'page-about',
@@ -12,6 +16,9 @@ import 'rxjs/add/operator/toPromise';
 
 export class AboutPage {
 
+	results;
+	searchSubject = new Subject();
+
 	constructor(
 		public navCtrl: NavController, 
 		public navParams: NavParams,
@@ -19,9 +26,24 @@ export class AboutPage {
 		) {
 
  	}
+
+ 	ionViewDidLoad() {
+ 		this.searchSubject
+ 			.debounceTime(300)
+ 			.distinctUntilChanged()
+ 			.subscribe(name => {
+ 			this.http.get('http://swapi.co/api/people/?search=' + name)
+        		.subscribe(response => this.results = response.json().results);
+ 		})
+ 	}
+
+ 	createAPIObservable(name) {
+ 		return this.http.get('http://swapi.co/api/people/?search=' + name)
+ 			.map(response => response.json().results);
+ 	}
+
+ 	findCharacter(name){
+ 		this.searchSubject.next(name);
+	}
      
-}
-findCharacter(name){
-    this.http.get('http://swapi.co/api/people/?search=' + name)
-        .subscribe(response => this.results = response.json().results);
 }
