@@ -1,17 +1,20 @@
 import { Component } from '@angular/core';
-
 import { NavController, NavParams } from 'ionic-angular';
+import { Http } from '@angular/http';
 
 
 @Component({
-  selector: 'page-list',
-  templateUrl: 'list.html'
+  selector: 'page-about',
+  templateUrl: 'about.html'
 })
 
-export class ListPage {
+export class AboutPage {
 
-constructor(public navCtrl: NavController, public navParams: NavParams) {
-    this.about = navParams.get('item'); 
+	constructor(
+		public navCtrl: NavController, public navParams: NavParams,
+		private http: Http
+		) {
 
-
-});
+ 	}
+     
+}
